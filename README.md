@@ -26,9 +26,15 @@ Two repositories are implicated whithin this solution
 export ENV_NAME=development
 export PROFILE_NAME=wordcup
 
-aws configure --profile PROFILE_NAME
+# You will have different options to configure your AWS account, I will provide a couple of options here
+# Option 1. Configure Profile
+aws configure --profile $PROFILE_NAME
+export AWS_PROFILE=$PROFILE_NAME
 
-export ENV_NAME=development
+# Option 2. Programmatic access
+export AWS_ACCESS_KEY_ID="ASTSDAAAAAA"
+export AWS_SECRET_ACCESS_KEY="PXAXSAXSAAXASXSwHITTB8888888Gt5np"
+export AWS_REGION="us-east-1"
 ```
 
 The terraform project is ready to recognize two environments: `development` or `production`

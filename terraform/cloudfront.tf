@@ -56,9 +56,9 @@ module "cdn" {
 resource "aws_acm_certificate" "ga_cloud" {
   domain_name       = local.domain.name
   validation_method = "DNS"
-  
+
   subject_alternative_names = [format("*.%s", local.domain.name)]
-  
+
 }
 
 data "aws_route53_zone" "ga_cloud" {
