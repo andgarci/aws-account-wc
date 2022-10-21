@@ -11,11 +11,11 @@ locals {
     name = "garciaalcantara.cloud"
 
     development = {
-      domain_name = "dev.garciaalcantara.com"
+      domain_name = "api-dev.garciaalcantara.cloud"
     }
 
     production = {
-      domain_name = "prod.garciaalcantara.com"
+      domain_name = "api.garciaalcantara.cloud"
     }
   }
 
@@ -24,11 +24,11 @@ locals {
 
   dynamo = {
     development = {
-      table_name = "dev.garciaalcantara.com"
+      table_name = "dev.garciaalcantara.cloud"
     }
 
     production = {
-      domain_name = "prod.garciaalcantara.com"
+      domain_name = "prod.garciaalcantara.cloud"
     }
   }
 

@@ -10,30 +10,30 @@ resource "aws_dynamodb_table" "wctable" {
     type = "S"
   }
 
-#   attribute {
-#     name = "champion"
-#     type = "S"
-#   }
+  #   attribute {
+  #     name = "champion"
+  #     type = "S"
+  #   }
 
-#   attribute {
-#     name = "runner-up"
-#     type = "S"
-#   }
+  #   attribute {
+  #     name = "runner-up"
+  #     type = "S"
+  #   }
 
-#   attribute {
-#     name = "top-scorers"
-#     type = "S"
-#   }
+  #   attribute {
+  #     name = "top-scorers"
+  #     type = "S"
+  #   }
 
-#   attribute {
-#     name = "top-scorers-goals"
-#     type = "N"
-#   }
+  #   attribute {
+  #     name = "top-scorers-goals"
+  #     type = "N"
+  #   }
 
-#   attribute {
-#     name = "year"
-#     type = "N"
-#   }
+  #   attribute {
+  #     name = "year"
+  #     type = "N"
+  #   }
 
   tags = local.tags
 }
