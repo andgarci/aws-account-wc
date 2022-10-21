@@ -32,6 +32,10 @@ locals {
     }
   }
 
+  pipeline = {
+    bucket_name = format("tfstate-wordcup-%s", local.environment)
+  }
+
   tags = {
     service     = format("apiwc-%s", local.environment)
     environment = local.environment

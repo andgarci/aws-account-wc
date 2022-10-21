@@ -24,7 +24,7 @@ Two repositories are implicated whithin this solution
 ### Configure AWS Credentials
 ```shell
 export ENV_NAME=development
-export PROFILE_NAME=wordcup
+export PROFILE_NAME=worldcup
 
 # You will have different options to configure your AWS account, I will provide a couple of options here
 # Option 1. Configure Profile
