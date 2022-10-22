@@ -18,9 +18,6 @@ Two repositories are implicated whithin this solution
 - AWS CLI Installed
 - Terraform
 
-## IaaS Installation
-`git clone git@github.com:andgarci/aws-account-wc.git`
-
 ### Configure AWS Credentials
 ```shell
 export ENV_NAME=development
@@ -37,9 +34,11 @@ export AWS_SECRET_ACCESS_KEY="PXAXSAXSAAXASXSwHITTB8888888Gt5np"
 export AWS_REGION="us-east-1"
 ```
 
+### Terraform - Create IaaS
+
 The terraform project is ready to recognize two environments: `development` or `production`
 
-```terraform
+```shell
 terraform init
 terraform workspace select $ENV_NAME || terraform workspace new $ENV_NAME
 terraform plan # Optional, to show how the resources are going to be deployed
@@ -48,4 +47,5 @@ terraform apply
 
 ## Application Installation
 `git clone git@github.com:andgarci/serverless-wc-data.git`
+
 As the Pipeline was already build via Terraform our next step will be only to use the content of the previouslly cloned repo to the new one to get the application to be functional in an automated way.
