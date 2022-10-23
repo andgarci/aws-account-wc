@@ -5,11 +5,6 @@ resource "aws_codepipeline" "codepipeline" {
   artifact_store {
     location = aws_s3_bucket.codepipeline_bucket.bucket
     type     = "S3"
-
-    encryption_key {
-      id   = data.aws_kms_alias.s3kmskey.arn
-      type = "KMS"
-    }
   }
 
   stage {
@@ -24,8 +19,8 @@ resource "aws_codepipeline" "codepipeline" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        ConnectionArn    = aws_codestarconnections_connection.example.arn
-        FullRepositoryId = "my-organization/example"
+        ConnectionArn    = aws_codestarconnections_connection.github.arn
+        FullRepositoryId = local.pipeline.repository_id
         BranchName       = "main"
       }
     }
@@ -44,7 +39,7 @@ resource "aws_codepipeline" "codepipeline" {
       version          = "1"
 
       configuration = {
-        ProjectName = "test"
+        ProjectName = format("WorldCup-BuildProject-%s", local.environment)
       }
     }
   }
@@ -65,7 +60,7 @@ resource "aws_s3_bucket_acl" "codepipeline_bucket_acl" {
 }
 
 resource "aws_iam_role" "codepipeline_role" {
-  name = "test-role"
+  name = format("CodePipelineRole-%s", local.environment)
 
   assume_role_policy = <<EOF
 {
@@ -110,7 +105,7 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
       "Action": [
         "codestar-connections:UseConnection"
       ],
-      "Resource": "${aws_codestarconnections_connection.example.arn}"
+      "Resource": "${aws_codestarconnections_connection.github.arn}"
     },
     {
       "Effect": "Allow",
@@ -123,8 +118,4 @@ resource "aws_iam_role_policy" "codepipeline_policy" {
   ]
 }
 EOF
-}
-
-data "aws_kms_alias" "s3kmskey" {
-  name = "alias/myKmsKey"
 }
