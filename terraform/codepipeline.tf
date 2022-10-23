@@ -50,15 +50,6 @@ resource "aws_codestarconnections_connection" "github" {
   provider_type = "GitHub"
 }
 
-resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket = local.pipeline.bucket_name
-}
-
-resource "aws_s3_bucket_acl" "codepipeline_bucket_acl" {
-  bucket = aws_s3_bucket.codepipeline_bucket.id
-  acl    = "private"
-}
-
 resource "aws_iam_role" "codepipeline_role" {
   name = format("CodePipelineRole-%s", local.environment)
 
