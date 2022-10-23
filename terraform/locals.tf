@@ -1,10 +1,18 @@
 locals {
   environment = terraform.workspace
 
+  account_id = data.aws_caller_identity.current.account_id
+
+  pipeline = {
+    bucket_name       = format("tfstate-wordcup-%s", local.environment)
+    github_connection = "arn:aws:codestar-connections:us-east-1:370421367517:connection/5029d457-2493-411d-8588-de69fcd8ce1c"
+    repository_id     = "andgarci/serverless-wc-data"
+  }
+
   region = {
     development = "us-east-1"
     production  = "us-east-2"
-  }
+  }[local.environment]
 
   domain = {
 
@@ -32,8 +40,8 @@ locals {
     }
   }
 
-  pipeline = {
-    bucket_name = format("tfstate-wordcup-%s", local.environment)
+  parameters = {
+    table_name = format("table-wordcup-%s", local.environment)
   }
 
   tags = {

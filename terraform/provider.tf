@@ -9,5 +9,5 @@ terraform {
 
 provider "aws" {
   # Configuration options
-  region = local.region[local.environment]
+  region = local.region
 }
