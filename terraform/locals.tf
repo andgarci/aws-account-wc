@@ -13,13 +13,7 @@ locals {
     production  = "us-east-2"
   }[local.environment]
   dynamo = {
-    development = {
-      table_name = "dev.garciaalcantara.cloud"
-    }
-
-    production = {
-      domain_name = "prod.garciaalcantara.cloud"
-    }
+    table_name = format("table-wordcup-%s", local.environment)
   }
 
   parameters = {
