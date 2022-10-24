@@ -6,6 +6,7 @@ locals {
     aws_iam_policy.lambda.arn,
     aws_iam_policy.cloudformation.arn,
     aws_iam_policy.iam_management.arn,
+    aws_iam_policy.sqs.arn,
   ]
 }
 resource "aws_codebuild_project" "worldcup_project" {
@@ -174,6 +175,10 @@ resource "aws_iam_policy" "lambda" {
         Effect = "Allow",
         Action = [
           "lambda:CreateFunction",
+          "lambda:CreateEventSourceMapping",
+          "lambda:GetEventSourceMapping",
+          "lambda:ListEventSourceMappings",
+          "lambda:UpdateEventSourceMapping",
           "lambda:TagResource",
           "lambda:AddPermission",
           "lambda:ListFunctions",
@@ -185,6 +190,26 @@ resource "aws_iam_policy" "lambda" {
           "lambda:RemoveLayerVersionPermission",
           "lambda:RemovePermission",
           "lambda:GetPolicy"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "sqs" {
+  name        = format("SQSPolicy-wcp-%s", local.environment)
+  description = "SQS Policy"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "sqs:*"
         ],
         Resource = "*"
       }
