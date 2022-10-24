@@ -1,8 +1,8 @@
 # AWS Simple Application - World Cup historical information API
 Infrastructure repository
 
-This simple project is inteded to show how different services are integrated through infrastructure and automation.
-Two repositories are implicated whithin this solution
+This simple project is intended to show how different services are integrated through infrastructure and automation.
+Two repositories are implicated in this solution.
 
 ### Iac Terraform
 - https://github.com/andgarci/aws-account-wc
@@ -17,11 +17,11 @@ Two repositories are implicated whithin this solution
 - [AWS Account](http://aws.amazon.com/)
 - [AWS CLI](https://aws.amazon.com/cli/)
 - [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-- Versions
-    - Terraform 1.3.3, AWS Provider 4.3.3
-    - AWS CLI 1.6
 
 ### Configure AWS Credentials
+
+Our first step will be to setup our credentials in our terminal to create Infrastructure via Terraform.
+
 ```shell
 export ENV_NAME=development
 export PROFILE_NAME=worldcup
@@ -38,11 +38,11 @@ export AWS_REGION="us-east-1"
 ```
 
 To get more details and options, please refer to [AWS CLI Configuration.](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
-I am sure I don't not need to tell it, but please, [do **not use** root account.](https://docs.aws.amazon.com/accounts/latest/reference/best-practices-root-user.html)
+I don't not need to tell it, but remember to [do **not use** root credentials.](https://docs.aws.amazon.com/accounts/latest/reference/best-practices-root-user.html)
 
 ### Terraform - Create IaaS
 
-The terraform project is ready to recognize two environments: `development` or `production`
+The terraform project is ready to recognize two environments: `development` or `production`. Then we are creating our workspace to use this name.
 
 ```shell
 terraform init
@@ -50,9 +50,11 @@ terraform workspace select $ENV_NAME || terraform workspace new $ENV_NAME
 terraform plan # Optional, to show how the resources are going to be deployed
 terraform apply
 ```
+---
+You may look at the code in case you want to change regions or specific configurations related to your custom play.
+---
 
-## Application Installation
-At this point you have your infrastructure ready for the next phase. Our next step to install the application is to have our application GitHub repository connection in AWS.
+At this point, you have your infrastructure ready for the next phase. Our next step to install the application is to have our application GitHub repository connection in AWS.
 
 All the resources will be ready, but the GitHub connection.
 
@@ -61,10 +63,28 @@ All the resources will be ready, but the GitHub connection.
 
 The aws_codestarconnections_connection resource is created in the state PENDING. Authentication with the connection provider must be completed in the AWS Console.
 
-> [CodeStart Connections](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codestarconnections_connection)
+- [CodeStart Connections](https://docs.aws.amazon.com/dtconsole/latest/userguide/connections-update.html?icmpid=docs_acp_help_panel)
+- [Terraform Reference](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codestarconnections_connection)
 ---
 
+You can fork this repository in your own account, then use it for the CodeStart connection configuration.
 
 `git clone git@github.com:andgarci/serverless-wc-data.git`
 
-As the Pipeline was already build via Terraform our next step will be only to use the content of the previouslly cloned repo to the new one to get the application to be functional in an automated way.
+As the Pipeline was already built via Terraform. Our next step will be only to use the content of the previously cloned repo to see how the application will be installed automatically on our platform.
+
+If the Pipeline is not configured, the first time will fail. After configured, the next time you attempt to execute Pipeline or a push is sent to your repository, the Pipeline will work.
+
+### Cleanup
+
+To cleanup the resources created by this lab, please follow these steps:
+
+```shell
+# Delete resources from SAM Application
+aws cloudformation delete-stack --stack-name serverless-wc-data
+
+# Delete infrasrtucture resources
+terraform destroy
+```
+
+In case of error related to S3 Buckets, you have to _Emtpy_ refenced buckets and run again the `delete/destroy` commands.
