@@ -1,3 +1,13 @@
+locals {
+  iam_policy_arn = [
+    aws_iam_policy.basepolicy.arn,
+    aws_iam_policy.apigateway.arn,
+    aws_iam_policy.ssmparam.arn,
+    aws_iam_policy.lambda.arn,
+    aws_iam_policy.cloudformation.arn,
+    aws_iam_policy.iam_management.arn,
+  ]
+}
 resource "aws_codebuild_project" "worldcup_project" {
   name          = format("WorldCup-BuildProject-%s", local.environment)
   description   = "World Cup Build Project"
@@ -45,15 +55,15 @@ resource "aws_iam_role" "codebuild" {
 EOF
 }
 
-resource "aws_iam_role_policy" "codebuild" {
-  role   = aws_iam_role.codebuild.name
-  policy = aws_iam_policy.basepolicy.policy
+resource "aws_iam_role_policy_attachment" "codebuild" {
+  role       = aws_iam_role.codebuild.name
+  count      = length(local.iam_policy_arn)
+  policy_arn = local.iam_policy_arn[count.index]
 }
 
 resource "aws_iam_policy" "basepolicy" {
-  name        = format("CodeBuildBasePolicy-WorldCup-%s", local.environment)
-  path        = "/"
-  description = "CodeBuildBasePolicy"
+  name        = format("CodeBuildBasePolicy-wcp-%s", local.environment)
+  description = "CodeBuild Base Policy"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -83,6 +93,7 @@ resource "aws_iam_policy" "basepolicy" {
         Effect = "Allow"
         Resource = [
           "arn:aws:s3:::codepipeline-us-east-1-*",
+          "arn:aws:s3:::aws-sam-cli-managed*/*",
           format("arn:aws:s3:::%s*", local.pipeline.bucket_name)
         ]
       },
@@ -98,6 +109,156 @@ resource "aws_iam_policy" "basepolicy" {
         Resource = [
           format("arn:aws:codebuild:%s:%s:report-group:/*", local.region, local.account_id),
         ]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "apigateway" {
+  name        = format("ApiGatewayPolicy-wcp-%s", local.environment)
+  description = "API Gateway Policy"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "apigateway:DELETE",
+          "apigateway:PUT",
+          "apigateway:PATCH",
+          "apigateway:POST",
+          "apigateway:GET"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "ssmparam" {
+  name        = format("SSMParamsPolicy-wcp-%s", local.environment)
+  description = "SSM Params  Policy"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "ssm:DescribeParameters",
+          "ssm:GetParametersByPath",
+          "ssm:GetParameters",
+          "ssm:GetParameter"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "lambda" {
+  name        = format("LambdaFunctionPolicy-wcp-%s", local.environment)
+  description = "Lambda Function Policy"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "lambda:CreateFunction",
+          "lambda:TagResource",
+          "lambda:AddPermission",
+          "lambda:ListFunctions",
+          "lambda:InvokeFunction",
+          "lambda:GetFunction",
+          "lambda:DeleteFunction",
+          "lambda:AddLayerVersionPermission",
+          "lambda:UntagResource",
+          "lambda:RemoveLayerVersionPermission",
+          "lambda:RemovePermission",
+          "lambda:GetPolicy"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "cloudformation" {
+  name        = format("CloudFormationPolicy-wcp-%s", local.environment)
+  description = "Cloud Formation Policy Policy"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "cloudformation:ListStacks",
+          "cloudformation:DescribeStackResources",
+          "cloudformation:CreateChangeSet",
+          "cloudformation:DeleteChangeSet",
+          "cloudformation:GetTemplateSummary",
+          "cloudformation:DescribeStacks",
+          "cloudformation:DescribeStackEvents",
+          "cloudformation:DescribeStackSet",
+          "cloudformation:ListStackSets",
+          "cloudformation:CreateStack",
+          "cloudformation:GetTemplate",
+          "cloudformation:DescribeChangeSet",
+          "cloudformation:ExecuteChangeSet",
+          "cloudformation:CreateStackSet",
+          "cloudformation:ListChangeSets"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_policy" "iam_management" {
+  name        = format("IamManagementPolicy-wcp-%s", local.environment)
+  description = "IAM Management Policy Policy"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "iam:GetRole",
+          "iam:ListRoleTags",
+          "iam:UntagRole",
+          "iam:TagRole",
+          "iam:ListRoles",
+          "iam:CreateRole",
+          "iam:DeleteRole",
+          "iam:AttachRolePolicy",
+          "iam:PutRolePolicy",
+          "iam:DeleteRolePermissionsBoundary",
+          "iam:TagPolicy",
+          "iam:CreatePolicy",
+          "iam:PassRole",
+          "iam:DetachRolePolicy",
+          "iam:DeleteRolePolicy",
+          "iam:UntagPolicy",
+          "iam:ListPolicyTags",
+          "iam:ListRolePolicies",
+          "iam:GetRolePolicy"
+        ],
+        Resource = "*"
       }
     ]
   })

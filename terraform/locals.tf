@@ -4,8 +4,8 @@ locals {
   account_id = data.aws_caller_identity.current.account_id
 
   pipeline = {
-    bucket_name       = format("pipeline-bucket-wordcup-%s", local.environment)
-    repository_id     = "andgarci/serverless-wc-data"  # Name of the GitHub repository
+    bucket_name   = format("pipeline-bucket-wordcup-%s", local.environment)
+    repository_id = "andgarci/serverless-wc-data" # Name of the GitHub repository
   }
 
   region = {
@@ -19,7 +19,7 @@ locals {
   parameters = {
     table_name = format("table-wordcup-%s", local.environment)
   }
- 
+
   ##### Optional section. 
   # In case you want to include this information, you must have
   # identified your domain Hosted ZoneId in Route53.
