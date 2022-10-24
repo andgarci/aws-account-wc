@@ -56,14 +56,13 @@ At this point you have your infrastructure ready for the next phase. Our next st
 
 All the resources will be ready, but the GitHub connection.
 
-/*:
-  - NOTE:
-   "The aws_codestarconnections_connection resource is created in the state PENDING. Authentication with the connection provider must be completed in the AWS Console."
-  \
-  \
-  https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codestarconnections_connection
- */
+---
+**_NOTE:_**   
 
+The aws_codestarconnections_connection resource is created in the state PENDING. Authentication with the connection provider must be completed in the AWS Console.
+
+> [CodeStart Connections](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codestarconnections_connection)
+---
 
 
 `git clone git@github.com:andgarci/serverless-wc-data.git`
