@@ -50,9 +50,8 @@ terraform workspace select $ENV_NAME || terraform workspace new $ENV_NAME
 terraform plan # Optional, to show how the resources are going to be deployed
 terraform apply
 ```
----
-You may look at the code in case you want to change regions or specific configurations related to your custom play.
----
+
+_You may look at the code in case you want to change regions or specific configurations related to your custom play._
 
 At this point, you have your infrastructure ready for the next phase. Our next step to install the application is to have our application GitHub repository connection in AWS.
 
