@@ -38,7 +38,7 @@ export AWS_REGION="us-east-1"
 ```
 
 To get more details and options, please refer to [AWS CLI Configuration.](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
-I don't not need to tell it, but remember to [do **not use** root credentials.](https://docs.aws.amazon.com/accounts/latest/reference/best-practices-root-user.html)
+Remember to [do **not use** root credentials.](https://docs.aws.amazon.com/accounts/latest/reference/best-practices-root-user.html)
 
 ### Terraform - Create IaaS
 
