@@ -13,10 +13,13 @@ Two repositories are implicated whithin this solution
 ![Architecture](https://github.com/andgarci/aws-account-wc/blob/main/architecture.jpg?raw=true)
 
 
-## Pre conditions
-- AWS Account
-- AWS CLI Installed
-- Terraform
+## Requirements
+- [AWS Account](http://aws.amazon.com/)
+- [AWS CLI](https://aws.amazon.com/cli/)
+- [Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+- Versions
+    - Terraform 1.3.3, AWS Provider 4.3.3
+    - AWS CLI 1.6
 
 ### Configure AWS Credentials
 ```shell
@@ -34,6 +37,9 @@ export AWS_SECRET_ACCESS_KEY="PXAXSAXSAAXASXSwHITTB8888888Gt5np"
 export AWS_REGION="us-east-1"
 ```
 
+To get more details and options, please refer to [AWS CLI Configuration.](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html)
+I am sure I don't not need to tell it, but please, [do **not use** root account.](https://docs.aws.amazon.com/accounts/latest/reference/best-practices-root-user.html)
+
 ### Terraform - Create IaaS
 
 The terraform project is ready to recognize two environments: `development` or `production`
@@ -46,6 +52,20 @@ terraform apply
 ```
 
 ## Application Installation
+At this point you have your infrastructure ready for the next phase. Our next step to install the application is to have our application GitHub repository connection in AWS.
+
+All the resources will be ready, but the GitHub connection.
+
+/*:
+  - NOTE:
+   "The aws_codestarconnections_connection resource is created in the state PENDING. Authentication with the connection provider must be completed in the AWS Console."
+  \
+  \
+  https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/codestarconnections_connection
+ */
+
+
+
 `git clone git@github.com:andgarci/serverless-wc-data.git`
 
 As the Pipeline was already build via Terraform our next step will be only to use the content of the previouslly cloned repo to the new one to get the application to be functional in an automated way.
