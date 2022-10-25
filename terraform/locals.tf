@@ -4,7 +4,7 @@ locals {
   account_id = data.aws_caller_identity.current.account_id
 
   pipeline = {
-    bucket_name   = format("pipeline-bucket-wordcup-%s", local.environment)
+    bucket_name   = format("pipeline-bucket-wordcup-%s-%s", local.account_id, local.environment)
     repository_id = "andgarci/serverless-wc-data" # Name of the GitHub repository
   }
 

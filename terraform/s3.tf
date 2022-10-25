@@ -2,7 +2,10 @@ resource "aws_s3_bucket" "codepipeline_bucket" {
   bucket = local.pipeline.bucket_name
 }
 
-resource "aws_s3_bucket_acl" "codepipeline_bucket_acl" {
+resource "aws_s3_bucket_ownership_controls" "codepipeline_bucket_ownership" {
   bucket = aws_s3_bucket.codepipeline_bucket.id
-  acl    = "private"
+
+  rule {
+    object_ownership = "BucketOwnerEnforced"
+  }
 }

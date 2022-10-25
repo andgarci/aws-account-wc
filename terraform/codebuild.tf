@@ -95,8 +95,27 @@ resource "aws_iam_policy" "basepolicy" {
         Resource = [
           "arn:aws:s3:::codepipeline-us-east-1-*",
           "arn:aws:s3:::aws-sam-cli-managed*/*",
-          format("arn:aws:s3:::%s*", local.pipeline.bucket_name)
+          format("arn:aws:s3:::%s/*", local.pipeline.bucket_name)
         ]
+      },
+      {
+        Action = [
+          "s3:CreateBucket",
+          "s3:DeleteBucket",
+          "s3:PutBucketTagging",
+          "s3:SetBucketEncryption",
+          "s3:PutEncryptionConfiguration",
+          "s3:GetEncryptionConfiguration",
+          "s3:PutBucketVersioning",
+          "s3:PutPublicAccessBlock",
+          "s3:PutAccountPublicAccessBlock",
+          "s3:PutBucketPublicAccessBlock",
+          "s3:PutBucketPolicy",
+          "s3:DeleteBucketPolicy",
+          "s3:GetBucketPolicy"
+        ]
+        Effect   = "Allow"
+        Resource = "*"
       },
       {
         Action = [
@@ -175,6 +194,7 @@ resource "aws_iam_policy" "lambda" {
         Effect = "Allow",
         Action = [
           "lambda:CreateFunction",
+          "lambda:UpdateFunctionCode",
           "lambda:CreateEventSourceMapping",
           "lambda:GetEventSourceMapping",
           "lambda:ListEventSourceMappings",
