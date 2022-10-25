@@ -74,13 +74,18 @@ As the Pipeline was already built via Terraform. Our next step will be only to u
 
 If the Pipeline is not configured, the first time will fail. After configured, the next time you attempt to execute Pipeline or a push is sent to your repository, the Pipeline will work.
 
+![Pipeline First Time](https://github.com/andgarci/aws-account-wc/blob/main/pipeline-failure.jpg?raw=true)
+
+After you complete the connection to GitHub, just ask the Pipeline: `Release change`.
+
 ### Cleanup
 
 To cleanup the resources created by this lab, please follow these steps:
 
 ```shell
-# Delete resources from SAM Application
+# Delete resources from SAM Application. You can do it via CLI or AWS Console, look for this CloudFormation stacks
 aws cloudformation delete-stack --stack-name serverless-wc-data
+aws cloudformation delete-stack --stack-name aws-sam-cli-managed-default
 
 # Delete infrasrtucture resources
 terraform destroy
